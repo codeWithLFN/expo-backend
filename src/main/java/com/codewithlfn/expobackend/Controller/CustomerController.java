@@ -1,13 +1,14 @@
 package com.codewithlfn.expobackend.Controller;
 
 import com.codewithlfn.expobackend.Dto.CreateCustomerDTO;
+import com.codewithlfn.expobackend.Entity.CustomerEntity;
 import com.codewithlfn.expobackend.Service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -23,21 +24,21 @@ public class CustomerController {
     }
 
     // Read
-    @PutMapping("/viewCustomers")
-    public String viewCustomers() {
+    @GetMapping("/viewCustomers")
+    public List<CustomerEntity> viewCustomers() {
         log.info("View Customer list");
-        return "View Customer list";
+        return customerService.viewCustomers();
     }
     // Update customer
-    @PutMapping("/updateCustomer")
-    public String updateCustomer(){
-        log.info("Update Customer ");
-        return "Update Customer ";
+    @PutMapping("/updateCustomer/{id}")
+    public CustomerEntity updateCustomer(@PathVariable Integer id, @Valid @RequestBody CreateCustomerDTO request){
+        log.info("Update Customer with id : {}", id);
+        return customerService.updateCustomer(id, request);
     }
     // Remove Customer(Delete)
-    @PutMapping("/removeCustomer")
-    public String deleteCustomer(){
-        log.info("Delete Customer ");
-        return "Delete Customer ";
+    @DeleteMapping("/{id}")
+    public void deleteCustomer(@PathVariable Integer id) {
+        log.info("Delete Customer with id : {}", id);
+        customerService.deleteCustomer(id);
     }
 }
